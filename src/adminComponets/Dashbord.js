@@ -43,12 +43,21 @@ function Dashboard() {
 
   const fetchPostData = () => {
     fetch('https://majeback-5.onrender.com/getpostdata')
-    .then(res => res.json())
-    .then(data => {
-      // console.log(data)
-      setData(data);
-    });
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return res.json();
+      })
+      .then(data => {
+        setData(data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        // Handle error state or display a message to the user
+      });
   };
+  
 
   useEffect(() => {
     fetchPostData();
