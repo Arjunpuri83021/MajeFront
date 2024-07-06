@@ -14,8 +14,8 @@ function Dashboard() {
     const formData = { imageUrl, videoNo, views, link };
 
     const url = isUpdateMode
-      ? `https://majeback-5.onrender.com/updatepost/${postId}`
-      : 'https://majeback-5.onrender.com/postdata';
+      ? `https://majeback-production.up.railway.app/updatepost/${postId}`
+      : 'https://majeback-production.up.railway.app/postdata';
 
     const method = isUpdateMode ? 'PUT' : 'POST';
 
@@ -47,7 +47,7 @@ function Dashboard() {
   }
 
   const fetchPostData = () => {
-    fetch('https://majeback-5.onrender.com/getpostdata',{
+    fetch('https://majeback-production.up.railway.app/getpostdata',{
       mode: 'cors',
     })
       .then(res => {
@@ -69,7 +69,7 @@ function Dashboard() {
   }, []);
 
   function handleDelete(id) {
-    fetch(`https://majeback-5.onrender.com/deletepost/${id}`, {
+    fetch(`https://majeback-production.up.railway.app/deletepost/${id}`, {
       method: "DELETE"
     })
       .then(res => {

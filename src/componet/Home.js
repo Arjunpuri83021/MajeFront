@@ -10,7 +10,7 @@ function Home() {
   const itemsPerPage = 10;
 
   useEffect(() => {
-    fetch('https://majeback-5.onrender.com/getpostdata', {
+    fetch('https://majeback-production.up.railway.app/getpostdata', {
       mode: 'cors',
     })
       .then((res) => {
