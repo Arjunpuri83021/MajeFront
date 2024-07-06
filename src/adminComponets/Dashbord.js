@@ -24,7 +24,12 @@ function Dashboard() {
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify(formData)
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
         if (data._id) {
           e.target.reset();
@@ -33,7 +38,7 @@ function Dashboard() {
           setViews('');
           setLink('');
           fetchPostData();
-          setIsUpdateMode(false); // Reset update mode after successful submission
+          setIsUpdateMode(false);
         }
       })
       .catch(error => {
@@ -42,7 +47,9 @@ function Dashboard() {
   }
 
   const fetchPostData = () => {
-    fetch('https://majeback-5.onrender.com/getpostdata')
+    fetch('https://majeback-5.onrender.com/getpostdata',{
+      mode: 'cors',
+    })
       .then(res => {
         if (!res.ok) {
           throw new Error('Network response was not ok');
@@ -64,11 +71,21 @@ function Dashboard() {
   function handleDelete(id) {
     fetch(`https://majeback-5.onrender.com/deletepost/${id}`, {
       method: "DELETE"
-    }).then(res => res.json()).then(data => {
-      if (data._id) {
-        fetchPostData();
-      }
-    });
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (data._id) {
+          fetchPostData();
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }
 
   function openUpdateModal(item) {
@@ -128,7 +145,7 @@ function Dashboard() {
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close</button>
-              <button data-bs-dismiss="modal" type="submit" className="btn btn-light">{isUpdateMode ? 'Update' : 'Add'}</button>
+              <button type="submit" className="btn btn-light">{isUpdateMode ? 'Update' : 'Add'}</button>
             </div>
           </div>
         </form>

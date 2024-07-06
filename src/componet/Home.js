@@ -10,13 +10,24 @@ function Home() {
   const itemsPerPage = 10;
 
   useEffect(() => {
-    fetch('https://majeback-5.onrender.com/getpostdata')
-      .then((res) => res.json())
+    fetch('https://majeback-5.onrender.com/getpostdata', {
+      mode: 'cors',
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return res.json();
+      })
       .then((data) => {
         console.log(data);
         setPostData(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
       });
   }, []);
+  
 
   const handleSearch = (term) => {
     setSearchTerm(term);
